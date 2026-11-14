@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bahasa Melayu Darjah 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: satu skrin app, gaya buku latihan (sama dengan hub) — kad topik, kemudian satu soalan sebesar skrin */
+:root{
+  --paper:#FFFDF5;
+  --line:#D9E6F5;
+  --margin:#F2A3A3;
+  --ink:#1D3557;
+  --muted:#5B6B82;
+  --sun:#FFC93C;
+  --tomato:#E63946;
+  --grass:#2A9D8F;
+  --sky:#457B9D;
+  --font-display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --font-body:"Nunito","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(90deg,transparent 0 30px,var(--margin) 30px 32px,transparent 32px),
+    repeating-linear-gradient(180deg,transparent 0 31px,var(--line) 31px 32px);
+  color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.5;
+}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.app{max-width:560px;margin:0 auto;padding:24px 16px 40px 46px;display:flex;flex-direction:column;gap:20px}
+.screen{display:none;flex-direction:column;gap:20px}
+.screen.on{display:flex}
+
+/* topbar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-family:var(--font-display);font-weight:800;font-size:15px;background:var(--ink);color:var(--paper);padding:3px 12px;border-radius:999px}
+.demo{font-size:12px;font-weight:800;color:var(--tomato);border:2px dashed var(--tomato);padding:2px 10px;border-radius:999px}
+h1{font-family:var(--font-display);font-weight:800;font-size:clamp(30px,7vw,40px);line-height:1.05;margin:0;text-wrap:balance}
+h1 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 4px}
+.lead{margin:0;color:var(--muted)}
+
+/* topic cards */
+.topics{display:grid;gap:12px}
+.topic{display:flex;align-items:center;gap:14px;text-align:left;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:14px 16px;box-shadow:4px 4px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+.topic:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.topic:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.ic{flex:none;width:50px;height:50px;border-radius:12px;display:grid;place-items:center;font-family:var(--font-display);font-weight:800;font-size:22px;color:#fff}
+.t-txt{flex:1;min-width:0}
+.t-txt strong{display:block;font-weight:800;font-size:18px}
+.t-txt span{display:block;font-size:14px;color:var(--muted)}
+.stars{flex:none;font-size:18px;letter-spacing:1px;color:#D5DCE6}
+.stars .s-on{color:var(--sun);-webkit-text-stroke:1px #C99A12}
+
+/* quiz */
+.qhead{display:flex;align-items:center;gap:12px}
+.back{background:none;border:2px solid var(--ink);border-radius:10px;padding:4px 12px;font-weight:800}
+.bar{flex:1;height:14px;border:2px solid var(--ink);border-radius:999px;background:#fff;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--grass);width:0;transition:width .25s}
+.count{font-weight:800;font-variant-numeric:tabular-nums;font-size:15px}
+.qcard{background:#fff;border:2px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink);padding:22px 18px;display:flex;flex-direction:column;align-items:center;gap:14px;min-height:240px;justify-content:center}
+.qlabel{font-weight:800;color:var(--muted);font-size:15px;text-align:center}
+.qbig{font-family:var(--font-display);font-weight:800;font-size:clamp(36px,10vw,52px);line-height:1.1;text-align:center;font-variant-numeric:tabular-nums}
+
+/* bentuk lazim */
+.lazim{display:grid;grid-template-columns:auto auto;column-gap:14px;font-family:var(--font-display);font-weight:800;font-size:clamp(36px,10vw,50px);line-height:1.1;font-variant-numeric:tabular-nums}
+.lazim .op{grid-column:1;align-self:end}
+.lazim .n{grid-column:2;text-align:right;letter-spacing:.08em}
+.lazim .rule{grid-column:1 / span 2;border-top:4px solid var(--ink);margin-top:6px}
+.lazim .ans{grid-column:2;text-align:right;color:var(--tomato)}
+
+/* duit */
+.money{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.coin{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:15px;border:3px solid #9C7A1E;background:radial-gradient(circle at 35% 30%,#FFE9A8,#E3B341);color:#5A430A}
+.coin.silver{border-color:#7D8794;background:radial-gradient(circle at 35% 30%,#F4F6F8,#B9C1CB);color:#3A4350}
+.note{min-width:92px;height:52px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:17px;border:3px solid;padding:0 10px}
+.note.rm1{background:#DCEBFB;border-color:#3D6FB0;color:#1F4778}
+.note.rm5{background:#DDF3E3;border-color:#2F8A4E;color:#1C5A31}
+.note.rm10{background:#FBDDDD;border-color:#B23A3A;color:#7A1F1F}
+
+/* ayat & perkataan */
+.word{font-family:var(--font-display);font-weight:800;font-size:clamp(34px,9vw,48px);line-height:1.1;text-align:center;letter-spacing:.02em}
+.sentence{font-size:clamp(20px,5.4vw,24px);font-weight:700;text-align:center;line-height:1.5;max-width:28ch;text-wrap:balance}
+.blank{display:inline-block;min-width:3.2em;border-bottom:4px solid var(--tomato);color:var(--tomato);font-weight:800}
+.sylls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.syl{font-family:var(--font-display);font-weight:800;font-size:clamp(28px,8vw,40px);background:var(--sun);border:2px solid var(--ink);border-radius:12px;padding:2px 14px}
+.plus{font-family:var(--font-display);font-weight:800;font-size:32px;align-self:center;color:var(--muted)}
+.opts.words .opt{font-family:var(--font-body);font-size:clamp(18px,5vw,22px)}
+/* jam */
+.clock{width:190px;height:190px}
+
+/* options */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:16px 8px;font-family:var(--font-display);font-weight:800;font-size:clamp(22px,6vw,28px);box-shadow:3px 3px 0 var(--ink);font-variant-numeric:tabular-nums;transition:transform .1s}
+.opt:hover:not(:disabled){transform:translate(-1px,-1px)}
+.opt:disabled{cursor:default}
+.opt.right{background:#DDF3EF;border-color:var(--grass);box-shadow:3px 3px 0 var(--grass);color:#145C53}
+.opt.wrong{background:#FDE2E4;border-color:var(--tomato);box-shadow:3px 3px 0 var(--tomato);color:#8E1B24}
+.feedback{min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.fb-msg{font-weight:800;font-size:18px}
+.fb-msg.ok{color:var(--grass)}
+.fb-msg.no{color:var(--tomato)}
+.next{background:var(--ink);color:var(--paper);border:none;border-radius:12px;padding:12px 22px;font-weight:800;font-size:17px;visibility:hidden}
+.next.show{visibility:visible}
+
+/* result */
+.result{background:#fff;border:2px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink);padding:28px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.r-stars{font-size:52px;letter-spacing:6px;color:#D5DCE6;line-height:1}
+.r-stars .s-on{color:var(--sun);-webkit-text-stroke:2px #C99A12}
+.r-score{font-family:var(--font-display);font-weight:800;font-size:46px;line-height:1;font-variant-numeric:tabular-nums}
+.r-msg{margin:0;color:var(--muted);max-width:32ch}
+.r-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.btn{border:2px solid var(--ink);border-radius:12px;padding:12px 20px;font-weight:800;background:#fff;box-shadow:3px 3px 0 var(--ink)}
+.btn.primary{background:var(--sun)}
+.upsell{border:2px dashed var(--ink);border-radius:14px;padding:14px 16px;font-size:15px;color:var(--muted);text-align:center}
+.upsell strong{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HOME -->
+  <section class="screen on" id="home" aria-labelledby="h-home">
+    <div class="top"><span class="brand">Sudut Belajar</span><span class="demo">VERSI DEMO</span></div>
+    <h1 id="h-home">Bahasa Melayu <span class="hl">Darjah 2</span></h1>
+    <p class="lead">Pilih satu topik. Setiap pusingan ada 10 soalan. Dapat 9 atau 10 betul, dapat 3 bintang!</p>
+    <div class="topics" id="topics"></div>
+    <div class="upsell"><strong>Versi penuh</strong> ada semua unit silibus Darjah 2: kata kerja, kata adjektif, imbuhan, tanda baca, pemahaman petikan dan karangan pendek.</div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="quiz" aria-live="polite">
+    <div class="qhead">
+      <button class="back" id="backBtn" type="button">← Topik</button>
+      <div class="bar" aria-hidden="true"><i id="barFill"></i></div>
+      <span class="count" id="count">1/10</span>
+    </div>
+    <div class="qcard">
+      <div class="qlabel" id="qLabel"></div>
+      <div id="qBody"></div>
+    </div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback">
+      <span class="fb-msg" id="fbMsg"></span>
+      <button class="next" id="nextBtn" type="button">Seterusnya →</button>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="result">
+    <div class="top"><span class="brand">Sudut Belajar</span><span class="demo">VERSI DEMO</span></div>
+    <div class="result">
+      <div class="r-stars" id="rStars"></div>
+      <div class="r-score" id="rScore"></div>
+      <p class="r-msg" id="rMsg"></p>
+      <div class="r-btns">
+        <button class="btn primary" id="againBtn" type="button">Main lagi</button>
+        <button class="btn" id="homeBtn" type="button">Pilih topik lain</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var TOTAL = 10;
+  var rnd = function(a,b){return Math.floor(Math.random()*(b-a+1))+a;};
+  var pick = function(arr){return arr[rnd(0,arr.length-1)];};
+  var shuffle = function(a){for(var i=a.length-1;i>0;i--){var j=rnd(0,i);var t=a[i];a[i]=a[j];a[j]=t;}return a;};
+  var rm = function(sen){return "RM" + (sen/100).toFixed(2);};
+  var esc = function(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});};
+
+
+  function textOpts(right, wrongs){
+    var set=[right];
+    shuffle(wrongs.slice()).forEach(function(w){ if(set.length<4 && set.indexOf(w)<0) set.push(w); });
+    return shuffle(set).map(function(v){return {label:v, ok:v===right};});
+  }
+
+  // perkataan + suku kata
+  var SUKU = [
+    ["ba","ju"],["bu","ku"],["ku","cing"],["ke","re","ta"],["ru","mah"],["se","ko","lah"],
+    ["me","ja"],["ke","ru","si"],["bu","nga"],["a","yam"],["ba","si","kal"],["gu","ru"],
+    ["pa","yung"],["ma","ta","ha","ri"],["pin","tu"],["ting","kap"],["ka","sut"],["ga","jah"],
+    ["ha","ri","mau"],["ram","bu","tan"],["pi","sang"],["tem","bi","kai"],["pe","ra","hu"],
+    ["ar","nab"],["ra","ma","-ra","ma"],["bin","tang"],["se","lu","ar"],["ce","pat"]
+  ].filter(function(w){return w.join("").indexOf("-")<0;});
+
+  var EJAAN = [
+    ["kereta","kreta","kerata","kerreta"],["sekolah","sekola","sakolah","skolah"],
+    ["rambutan","rambotan","rambutang","ramputan"],["harimau","harimaw","harimou","herimau"],
+    ["tingkap","tinkap","tingkab","tengkap"],["payung","payong","paiyung","payunk"],
+    ["gajah","gaja","gajak","gajah-h"],["pisang","pisan","pissang","pesang"],
+    ["basikal","basekal","basikel","bisikal"],["jambatan","jembatan","jambattan","jambatang"],
+    ["kasut","kasot","kassut","kesut"],["kerusi","krusi","kerusih","korusi"],
+    ["bendera","bandera","bendira","bendra"],["epal","apel","eppal","epel"],
+    ["cawan","chawan","cawang","cauan"],["telinga","talinga","teliga","telingga"]
+  ];
+
+  var AYAT = [
+    ["Adik minum susu di dalam ___.","cawan",["kasut","tingkap","pokok"]],
+    ["Ayah membaca ___ setiap pagi.","surat khabar",["bantal","kipas","sudu"]],
+    ["Kami belajar di ___.","sekolah",["kolam","awan","kuali"]],
+    ["Kucing itu suka makan ___.","ikan",["buku","batu","kerusi"]],
+    ["Ibu memasak nasi di ___.","dapur",["padang","kereta","bilik tidur"]],
+    ["Saya memakai ___ ke sekolah.","kasut",["periuk","bantal","pinggan"]],
+    ["Hujan turun dengan lebat. Ali membuka ___.","payung",["peti sejuk","buku","radio"]],
+    ["Burung itu terbang di ___.","langit",["bawah meja","dalam almari","dalam tanah"]],
+    ["Kakak menyiram ___ di taman.","pokok bunga",["televisyen","katil","roti"]],
+    ["Cikgu menulis di ___.","papan putih",["lantai","siling","bumbung"]],
+    ["Kami makan nasi menggunakan ___.","sudu",["penyapu","pembaris","gunting"]],
+    ["Abang menendang ___ di padang.","bola",["kerusi","pinggan","bantal"]],
+    ["Pada waktu malam, kita dapat melihat ___.","bulan",["pelangi","matahari terbit","awan putih"]]
+  ];
+
+  var LAWAN = [
+    ["besar","kecil"],["tinggi","rendah"],["panjang","pendek"],["panas","sejuk"],["gemuk","kurus"],
+    ["cepat","lambat"],["siang","malam"],["buka","tutup"],["naik","turun"],["masuk","keluar"],
+    ["terang","gelap"],["jauh","dekat"],["tebal","nipis"],["berat","ringan"],["bersih","kotor"],
+    ["atas","bawah"],["depan","belakang"],["basah","kering"],["tua","muda"],["kuat","lemah"]
+  ];
+
+  var KHAS = ["Kuala Lumpur","Ahmad","Sungai Pahang","Isnin","Malaysia","Gunung Kinabalu","Siti","Ipoh","Disember","Pulau Pinang","Kak Lina","Zoo Negara"];
+  var AM = ["sekolah","kucing","bandar","sungai","hari","negara","gunung","budak","bulan","pulau","guru","kedai","pokok","meja"];
+
+  var TOPICS = [
+    {id:"suku", name:"Suku Kata", desc:"Kira dan kenal suku kata", ic:"ba", color:"var(--tomato)",
+     gen:function(){
+       var w=pick(SUKU), word=w.join("");
+       if(Math.random()<0.5){
+         var n=w.length, set=[n];
+         [n-1,n+1,n+2,n-2].forEach(function(v){ if(v>=1 && set.length<4 && set.indexOf(v)<0) set.push(v); });
+         return {label:"Berapakah suku kata dalam perkataan ini?", body:'<div class="word">'+word+'</div>',
+                 opts:shuffle(set).map(function(v){return {label:String(v), ok:v===n};}), ans:String(n)};
+       }
+       var parts=w.map(function(p){return '<span class="syl">'+p+'</span>';}).join('<span class="plus">+</span>');
+       var wrong=[w.slice().reverse().join(""), word.slice(0,-1), word+word.slice(-1), w[0]+w[0]+w.slice(1).join("")];
+       if(w.length>2) wrong.push(w[1]+w[0]+w.slice(2).join(""));
+       wrong=wrong.filter(function(x){return x!==word;});
+       return {label:"Gabungkan suku kata. Apakah perkataannya?", body:'<div class="sylls">'+parts+'</div>', opts:textOpts(word,wrong), ans:word, words:true};
+     }},
+    {id:"ejaan", name:"Ejaan", desc:"Pilih ejaan yang betul", ic:"Aa", color:"var(--grass)",
+     gen:function(){ var e=pick(EJAAN); return {label:"Yang manakah ejaan yang betul?", body:'<div class="word" aria-hidden="true">✏️</div>', opts:textOpts(e[0],e.slice(1)), ans:e[0], words:true}; }},
+    {id:"ayat", name:"Lengkapkan Ayat", desc:"Pilih perkataan yang sesuai", ic:"__", color:"var(--sky)",
+     gen:function(){ var a=pick(AYAT); return {label:"Pilih perkataan yang sesuai.", body:'<div class="sentence">'+a[0].replace("___",'<span class="blank">?</span>')+'</div>', opts:textOpts(a[1],a[2]), ans:a[1], words:true}; }},
+    {id:"lawan", name:"Kata Berlawan", desc:"Besar lawannya kecil", ic:"↔", color:"#C99A12",
+     gen:function(){
+       var p=pick(LAWAN), flip=Math.random()<0.5, q=flip?p[1]:p[0], r=flip?p[0]:p[1];
+       var wrong=shuffle(LAWAN.filter(function(x){return x!==p;})).slice(0,3).map(function(x){return x[Math.random()<0.5?0:1];});
+       return {label:"Apakah lawan bagi perkataan ini?", body:'<div class="word">'+q+'</div>', opts:textOpts(r,wrong), ans:r, words:true};
+     }},
+    {id:"khas", name:"Kata Nama Khas", desc:"Nama orang, tempat dan hari", ic:"KL", color:"#7B5EA7",
+     gen:function(){
+       var k=pick(KHAS), wrong=shuffle(AM.slice()).slice(0,3);
+       return {label:"Yang manakah kata nama khas?", body:'<div class="sentence">Kata nama khas ialah nama khusus dan dimulakan dengan <b>huruf besar</b>.</div>', opts:textOpts(k,wrong), ans:k, words:true};
+     }}
+  ];
+
+  // simpan bintang terbaik dalam pelayar ini sahaja
+  var best = {};
+  try{ best = JSON.parse(localStorage.getItem("sb-d2-bm") || "{}") || {}; }catch(e){ best = {}; }
+  function saveBest(){ try{ localStorage.setItem("sb-d2-bm", JSON.stringify(best)); }catch(e){} }
+  function starsHTML(n){ var s=""; for(var i=0;i<3;i++) s+='<span class="'+(i<n?"s-on":"")+'">★</span>'; return s; }
+  function starsFor(score){ return score>=9?3:score>=7?2:score>=5?1:0; }
+
+  // bunyi ringkas
+  var ac=null;
+  function beep(ok){
+    try{
+      ac = ac || new (window.AudioContext||window.webkitAudioContext)();
+      var o=ac.createOscillator(), g=ac.createGain();
+      o.type="triangle"; o.connect(g); g.connect(ac.destination);
+      var t=ac.currentTime;
+      o.frequency.setValueAtTime(ok?660:220,t);
+      if(ok) o.frequency.setValueAtTime(880,t+0.09);
+      g.gain.setValueAtTime(0.18,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.3);
+      o.start(t); o.stop(t+0.32);
+    }catch(e){}
+  }
+
+  var $ = function(id){return document.getElementById(id);};
+  function show(id){ ["home","quiz","result"].forEach(function(s){ $(s).classList.toggle("on", s===id); }); window.scrollTo(0,0); }
+
+  function renderHome(){
+    $("topics").innerHTML = TOPICS.map(function(t,i){
+      return '<button class="topic" type="button" data-i="'+i+'">'+
+        '<span class="ic" style="background:'+t.color+'">'+esc(t.ic)+'</span>'+
+        '<span class="t-txt"><strong>'+esc(t.name)+'</strong><span>'+esc(t.desc)+'</span></span>'+
+        '<span class="stars" aria-label="'+(best[t.id]||0)+' bintang">'+starsHTML(best[t.id]||0)+'</span></button>';
+    }).join("");
+  }
+
+  var cur=null, qn=0, score=0, q=null;
+
+  function start(i){ cur=TOPICS[i]; qn=0; score=0; show("quiz"); nextQ(); }
+
+  function nextQ(){
+    if(qn>=TOTAL){ finish(); return; }
+    q = cur.gen(); qn++;
+    $("count").textContent = qn+"/"+TOTAL;
+    $("barFill").style.width = ((qn-1)/TOTAL*100)+"%";
+    $("qLabel").textContent = q.label;
+    $("qBody").innerHTML = q.body;
+    $("fbMsg").textContent=""; $("fbMsg").className="fb-msg";
+    $("nextBtn").classList.remove("show");
+    $("opts").className = "opts" + (q.words ? " words" : "");
+    $("opts").innerHTML = q.opts.map(function(o,i){ return '<button class="opt" type="button" data-i="'+i+'">'+esc(o.label)+'</button>'; }).join("");
+  }
+
+  function answer(i){
+    var btns = $("opts").querySelectorAll(".opt");
+    var o = q.opts[i];
+    btns.forEach(function(b,j){ b.disabled=true; if(q.opts[j].ok) b.classList.add("right"); });
+    if(o.ok){ score++; $("fbMsg").textContent = pick(["Betul! Hebat!","Bagus!","Tepat sekali!","Pandai!"]); $("fbMsg").className="fb-msg ok"; }
+    else{ btns[i].classList.add("wrong"); $("fbMsg").textContent = "Jawapan betul: "+q.ans; $("fbMsg").className="fb-msg no"; }
+    beep(o.ok);
+    var ans = $("qBody").querySelector(".ans"); if(ans) ans.textContent = q.ans.length? q.ans : "";
+    $("barFill").style.width = (qn/TOTAL*100)+"%";
+    $("nextBtn").textContent = qn>=TOTAL ? "Lihat markah →" : "Seterusnya →";
+    $("nextBtn").classList.add("show");
+    $("nextBtn").focus();
+  }
+
+  function finish(){
+    var st = starsFor(score);
+    if(st > (best[cur.id]||0)){ best[cur.id]=st; saveBest(); }
+    $("rStars").innerHTML = starsHTML(st);
+    $("rScore").textContent = score+" / "+TOTAL;
+    $("rMsg").textContent = st===3 ? "Cemerlang! Kamu memang hebat dalam topik "+cur.name+"."
+      : st===2 ? "Bagus! Sikit lagi untuk dapat 3 bintang."
+      : st===1 ? "Boleh tahan. Cuba sekali lagi, mesti lebih baik!"
+      : "Tak apa, semua orang belajar. Jom cuba lagi!";
+    show("result");
+  }
+
+  $("topics").addEventListener("click", function(e){ var b=e.target.closest(".topic"); if(b) start(+b.dataset.i); });
+  $("opts").addEventListener("click", function(e){ var b=e.target.closest(".opt"); if(b && !b.disabled) answer(+b.dataset.i); });
+  $("nextBtn").addEventListener("click", nextQ);
+  $("backBtn").addEventListener("click", function(){ renderHome(); show("home"); });
+  $("againBtn").addEventListener("click", function(){ start(TOPICS.indexOf(cur)); });
+  $("homeBtn").addEventListener("click", function(){ renderHome(); show("home"); });
+
+  renderHome();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sudut Belajar Darjah 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: satu lajur macam muka surat buku latihan sekolah — garis biru, margin merah, kad ditampal */
+:root{
+  --paper:#FFFDF5;
+  --line:#D9E6F5;
+  --margin:#F2A3A3;
+  --ink:#1D3557;
+  --muted:#5B6B82;
+  --sun:#FFC93C;
+  --tomato:#E63946;
+  --grass:#2A9D8F;
+  --sky:#457B9D;
+  --font-display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --font-body:"Nunito","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(90deg,transparent 0 46px,var(--margin) 46px 48px,transparent 48px),
+    repeating-linear-gradient(180deg,transparent 0 31px,var(--line) 31px 32px);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:17px;
+  line-height:1.55;
+}
+.wrap{max-width:560px;margin:0 auto;padding:40px 20px 56px 64px;display:flex;flex-direction:column;gap:36px}
+@media (max-width:420px){.wrap{padding-left:60px;padding-right:16px}}
+
+header{display:flex;flex-direction:column;gap:12px}
+.tag{align-self:flex-start;background:var(--ink);color:var(--paper);font-weight:800;font-size:13px;letter-spacing:.04em;padding:4px 12px;border-radius:999px}
+h1{font-family:var(--font-display);font-weight:800;font-size:clamp(34px,8vw,46px);line-height:1.05;margin:0;text-wrap:balance}
+h1 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 4px}
+.lead{margin:0;color:var(--muted);max-width:42ch}
+
+section{display:flex;flex-direction:column;gap:14px}
+h2{font-family:var(--font-display);font-weight:800;font-size:24px;margin:0;display:flex;align-items:center;gap:10px}
+h2 .num{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--tomato);color:#fff;font-size:17px}
+.sub{margin:-6px 0 0;color:var(--muted);font-size:15px}
+
+.cards{display:grid;gap:12px}
+.card{
+  display:flex;align-items:center;gap:14px;
+  background:#fff;border:2px solid var(--ink);border-radius:14px;
+  padding:14px 16px;text-decoration:none;color:var(--ink);
+  box-shadow:4px 4px 0 var(--ink);
+  transition:transform .12s ease,box-shadow .12s ease;
+}
+.card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.card:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.card:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.icon{flex:none;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-family:var(--font-display);font-weight:800;font-size:20px;color:#fff}
+.i-mt{background:var(--tomato)}
+.i-bm{background:var(--grass)}
+.i-bi{background:var(--sky)}
+.i-all{background:var(--sun);color:var(--ink)}
+.txt{flex:1;min-width:0}
+.txt strong{display:block;font-size:17px;font-weight:800}
+.txt span{display:block;font-size:14px;color:var(--muted)}
+.pill{flex:none;font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.p-free{background:#DDF3EF;color:#1C6D63}
+.p-soon{background:#EEF1F5;color:var(--muted)}
+.p-buy{background:var(--sun);color:var(--ink)}
+.card.soon{border-style:dashed;box-shadow:none;cursor:default}
+.card.soon:hover{transform:none}
+
+.why{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:16px 18px}
+.why ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.why li{display:flex;gap:10px;align-items:flex-start}
+.why li::before{content:"✓";flex:none;width:22px;height:22px;border-radius:6px;background:var(--grass);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center;margin-top:2px}
+
+.wa{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--grass);color:#fff;text-decoration:none;font-weight:800;font-size:18px;padding:16px;border-radius:14px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
+.wa:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.wa-note{text-align:center;color:var(--muted);font-size:14px;margin:0}
+
+footer{color:var(--muted);font-size:14px;text-align:center}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header>
+    <span class="tag">KSSR · DARJAH 2</span>
+    <h1>Belajar sambil main, <span class="hl">setiap hari</span></h1>
+    <p class="lead">Latihan interaktif Matematik, Bahasa Melayu dan English untuk murid Darjah 2. Boleh main terus di telefon atau tablet, tak perlu muat turun.</p>
+  </header>
+
+  <section aria-labelledby="h-cuba">
+    <h2 id="h-cuba"><span class="num">1</span>Cuba percuma</h2>
+    <p class="sub">Biar anak cuba dulu. Kalau dia suka, baru ambil versi penuh.</p>
+    <div class="cards">
+      <a class="card" href="matematik.html">
+        <span class="icon i-mt">12</span>
+        <span class="txt"><strong>Matematik Darjah 2</strong><span>Tambah, tolak, nilai wang dan masa</span></span>
+        <span class="pill p-free">PERCUMA</span>
+      </a>
+      <a class="card" href="bahasa-melayu.html">
+        <span class="icon i-bm">Aa</span>
+        <span class="txt"><strong>Bahasa Melayu Darjah 2</strong><span>Suku kata, ejaan dan bina ayat</span></span>
+        <span class="pill p-free">PERCUMA</span>
+      </a>
+      <div class="card soon" aria-disabled="true">
+        <span class="icon i-bi">Hi</span>
+        <span class="txt"><strong>English Year 2</strong><span>Phonics, vocabulary and simple sentences</span></span>
+        <span class="pill p-soon">AKAN DATANG</span>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-penuh">
+    <h2 id="h-penuh"><span class="num">2</span>Dapatkan versi penuh</h2>
+    <p class="sub">Semua topik setahun, markah disimpan, latihan baharu setiap bulan.</p>
+    <div class="cards">
+      <a class="card" href="#">
+        <span class="icon i-mt">12</span>
+        <span class="txt"><strong>Matematik penuh</strong><span>Semua topik silibus Darjah 2</span></span>
+        <span class="pill p-buy">RM__</span>
+      </a>
+      <a class="card" href="#">
+        <span class="icon i-bm">Aa</span>
+        <span class="txt"><strong>Bahasa Melayu penuh</strong><span>Semua unit silibus Darjah 2</span></span>
+        <span class="pill p-buy">RM__</span>
+      </a>
+      <a class="card" href="#">
+        <span class="icon i-all">3in1</span>
+        <span class="txt"><strong>Pakej Jimat 3 Subjek</strong><span>Matematik + BM + English</span></span>
+        <span class="pill p-buy">RM__</span>
+      </a>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-ibubapa">
+    <h2 id="h-ibubapa"><span class="num">3</span>Untuk ibu bapa</h2>
+    <div class="why">
+      <ul>
+        <li>Ikut silibus KSSR Darjah 2, topik disusun ikut turutan sekolah</li>
+        <li>Sesi pendek 10 minit, sesuai lepas balik sekolah</li>
+        <li>Tiada iklan dan tiada pembelian dalam app</li>
+        <li>Anak nampak markah sendiri dan rasa nak cuba lagi</li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-hubungi">
+    <h2 id="h-hubungi"><span class="num">4</span>Ada soalan?</h2>
+    <a class="wa" href="https://wa.me/60000000000">Tanya di WhatsApp</a>
+    <p class="wa-note">Atau WhatsApp terus: 01X-XXX XXXX</p>
+  </section>
+
+  <footer>Dibina untuk murid Darjah 2 dan ibu bapa mereka</footer>
+</main>
+</body>
+</html>
