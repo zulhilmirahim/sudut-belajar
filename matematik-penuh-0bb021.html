@@ -133,7 +133,7 @@ h1 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 4px}
   <section class="screen on" id="home" aria-labelledby="h-home">
     <div class="top"><span class="brand">Sudut Belajar</span><span class="full">VERSI PENUH</span></div>
     <h1 id="h-home">Matematik <span class="hl">Darjah 2</span></h1>
-    <p class="lead">12 topik silibus setahun dan satu ujian campuran. Setiap pusingan ada 10 soalan baharu. Dapat 9 atau 10 betul, dapat 3 bintang!</p>
+    <p class="lead">12 topik silibus setahun dan satu ujian campuran. Setiap pusingan ada 30 soalan baharu. Dapat 27 atau lebih betul, dapat 3 bintang!</p>
     <div class="topics" id="topics"></div>
     <p class="foot">Untuk kegunaan pembeli sahaja. Terima kasih kerana tidak berkongsi link ini.</p>
   </section>
@@ -142,7 +142,7 @@ h1 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 4px}
     <div class="qhead">
       <button class="back" id="backBtn" type="button">← Topik</button>
       <div class="bar" aria-hidden="true"><i id="barFill"></i></div>
-      <span class="count" id="count">1/10</span>
+      <span class="count" id="count">1/30</span>
     </div>
     <div class="qcard">
       <div class="qlabel" id="qLabel"></div>
@@ -172,7 +172,7 @@ h1 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 4px}
 
 <script>
 (function(){
-  var TOTAL = 10;
+  var TOTAL = 30;
   var rnd = function(a,b){return Math.floor(Math.random()*(b-a+1))+a;};
   var pick = function(arr){return arr[rnd(0,arr.length-1)];};
   var shuffle = function(a){for(var i=a.length-1;i>0;i--){var j=rnd(0,i);var t=a[i];a[i]=a[j];a[j]=t;}return a;};
@@ -379,7 +379,7 @@ h1 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 4px}
   try{ best=JSON.parse(localStorage.getItem("sb-d2-mt-full")||"{}")||{}; }catch(e){ best={}; }
   function saveBest(){ try{ localStorage.setItem("sb-d2-mt-full", JSON.stringify(best)); }catch(e){} }
   function starsHTML(n){ var s=""; for(var i=0;i<3;i++) s+='<span class="'+(i<n?"s-on":"")+'">★</span>'; return s; }
-  function starsFor(sc){ return sc>=9?3:sc>=7?2:sc>=5?1:0; }
+  function starsFor(sc){ return sc>=27?3:sc>=21?2:sc>=15?1:0; }
 
   var ac=null;
   function beep(ok){
