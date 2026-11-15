@@ -96,6 +96,31 @@ h1 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 4px}
 .sec{font-family:var(--font-display);font-weight:800;font-size:15px;color:var(--muted);margin:6px 0 -4px;letter-spacing:.04em}
 .full{font-size:12px;font-weight:800;color:#145C53;background:#DDF3EF;padding:3px 10px;border-radius:999px}
 .story small{display:block;font-size:15px;color:var(--muted);margin-top:6px}
+.uasa-btn{display:flex;align-items:center;gap:14px;text-align:left;background:var(--sun);border:2px solid var(--ink);border-radius:14px;padding:16px;box-shadow:4px 4px 0 var(--ink)}
+.uasa-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.u-t{flex:1;min-width:0}
+.u-t strong{display:block;font-family:var(--font-display);font-size:20px;line-height:1.2}
+.u-t small{display:block;font-size:14px;line-height:1.4}
+.paper{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:16px}
+.paper h2{font-family:var(--font-display);font-size:20px;margin:0}
+.uq{display:flex;flex-direction:column;gap:8px;padding-bottom:14px;border-bottom:1px dashed #C9D3E0}
+.uq:last-child{border-bottom:none;padding-bottom:0}
+.qt{font-weight:700;font-size:17px;line-height:1.5}
+.qt .no-q{display:inline-block;min-width:28px;font-weight:800;color:var(--tomato)}
+.ans-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ans-row input{font:inherit;font-weight:800;font-size:18px;width:170px;max-width:100%;padding:8px 10px;border:2px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink)}
+.ans-row input:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.mk{font-size:13px;color:var(--muted);font-weight:800;margin-left:auto}
+.uq.ok input{border-color:var(--grass);background:#DDF3EF}
+.uq.no input{border-color:var(--tomato);background:#FDE2E4}
+.fix{font-weight:800;font-size:15px}
+.uq.ok .fix{color:var(--grass)}
+.uq.no .fix{color:var(--tomato)}
+.timer{font-family:var(--font-display);font-weight:800;font-variant-numeric:tabular-nums;background:var(--ink);color:var(--paper);padding:3px 12px;border-radius:999px}
+.scene{background:#F4F7FB;border-left:4px solid var(--sky);border-radius:8px;padding:12px 14px;font-size:16px;line-height:1.6}
+.submit{background:var(--tomato);color:#fff;border:2px solid var(--ink);border-radius:12px;padding:14px;font-weight:800;font-size:18px;box-shadow:3px 3px 0 var(--ink)}
+.u-res{display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;max-width:340px}
+.sumrow{display:flex;justify-content:space-between;font-weight:800;padding:6px 0;border-bottom:1px solid #E3E8EF;font-variant-numeric:tabular-nums}
 .foot{font-size:13px;color:var(--muted);text-align:center}
 /* jam */
 .clock{width:190px;height:190px}
@@ -135,6 +160,7 @@ h1 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 4px}
     <div class="top"><span class="brand">Sudut Belajar</span><span class="full">VERSI PENUH</span></div>
     <h1 id="h-home">Matematik <span class="hl">Tahun 5</span></h1>
     <p class="lead">11 topik silibus Tahun 5 dan satu ujian campuran. Setiap pusingan ada 30 soalan baharu. Dapat 27 atau lebih betul, dapat 3 bintang!</p>
+    <button class="uasa-btn" id="uasaBtn" type="button"><span class="ic" style="background:var(--ink)">📝</span><span class="u-t"><strong>Mod Latihan UASA</strong><small>Ikut format sebenar: 15 soalan, 50 markah, 1 jam 15 minit. Taip jawapan sendiri.</small></span></button>
     <div class="topics" id="topics"></div>
     <p class="foot">Untuk kegunaan pembeli sahaja. Terima kasih kerana tidak berkongsi link ini.</p>
   </section>
@@ -167,6 +193,16 @@ h1 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 4px}
         <button class="btn" id="homeBtn" type="button">Pilih topik lain</button>
       </div>
     </div>
+  </section>
+
+  <section class="screen" id="uasa">
+    <div class="top"><button class="back" id="uBack" type="button">← Keluar</button><span class="timer" id="uTimer" aria-label="Masa berbaki">75:00</span></div>
+    <h1>Latihan <span class="hl">UASA</span> Tahun 5</h1>
+    <p class="lead">Bahagian A: 13 soalan (26 markah). Bahagian B: 2 soalan berstruktur (24 markah). Taip jawapan dalam kotak, kemudian tekan Hantar.</p>
+    <div id="uResult"></div>
+    <div class="paper" id="uPaperA"></div>
+    <div class="paper" id="uPaperB"></div>
+    <button class="submit" id="uSubmit" type="button">Hantar jawapan</button>
   </section>
 
 </div>
@@ -443,7 +479,7 @@ h1 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 4px}
   }
 
   var $=function(id){return document.getElementById(id);};
-  function show(id){ ["home","quiz","result"].forEach(function(s){ $(s).classList.toggle("on", s===id); }); window.scrollTo(0,0); }
+  function show(id){ ["home","quiz","result","uasa"].forEach(function(s){ $(s).classList.toggle("on", s===id); }); window.scrollTo(0,0); }
 
   function renderHome(){
     var html="", last="";
@@ -495,6 +531,106 @@ h1 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 4px}
   $("backBtn").addEventListener("click",function(){renderHome(); show("home");});
   $("againBtn").addEventListener("click",function(){start(TOPICS.indexOf(cur));});
   $("homeBtn").addEventListener("click",function(){renderHome(); show("home");});
+  // ---------- MOD LATIHAN UASA ----------
+  function norm(s){
+    s=String(s).toLowerCase().replace(/rm/g,"").replace(/\s+/g,"");
+    if(/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s=s.replace(/,/g,"");
+    s=s.replace(/,/g,".").replace(/[^0-9.\/]/g,"");
+    return s;
+  }
+  function same(input, ans){
+    var a=norm(input), b=norm(ans); if(!a) return false;
+    if(/^\d*\.?\d+$/.test(a) && /^\d*\.?\d+$/.test(b)) return Math.abs(parseFloat(a)-parseFloat(b))<1e-9;
+    return a===b;
+  }
+  var UA=[
+    function(){var n=rnd(100001,999999),s=String(n),p=rnd(0,5);while(s[p]==="0")p=rnd(0,5);return {q:"Nyatakan nilai digit yang bergaris dalam nombor "+s.split("").map(function(c,i){return i===p?"<u>"+c+"</u>":c;}).join("")+".", ans:num(+s[p]*Math.pow(10,5-p))};},
+    function(){var n=rnd(100001,999999),t=pick([[1000,"ribu"],[10000,"puluh ribu"],[100000,"ratus ribu"]]);return {q:"Bundarkan "+num(n)+" kepada "+t[1]+" yang terdekat.", ans:num(Math.round(n/t[0])*t[0])};},
+    function(){var a=rnd(100000,599999),b=rnd(10000,399999);return {q:num(a)+" + "+num(b)+" =", ans:num(a+b)};},
+    function(){var a=rnd(300000,999999),b=rnd(10000,a-50000);return {q:num(a)+" − "+num(b)+" =", ans:num(a-b)};},
+    function(){var a=rnd(101,999),b=rnd(11,99);return {q:a+" × "+b+" =", ans:num(a*b)};},
+    function(){var d=rnd(11,49),q=rnd(12,250);return {q:num(d*q)+" ÷ "+d+" =", ans:num(q)};},
+    function(){var den=pick([3,4,5,6,8,10]),k=rnd(1,den-1),qty=den*rnd(3,12);return {q:"Hitung "+fr(k,den)+" daripada "+qty+".", ans:String(qty/den*k)};},
+    function(){var a=rnd(100,9999)/100,b=rnd(100,9999)/100;if(b>a){var t=a;a=b;b=t;}var add=Math.random()<0.5;return {q:a.toFixed(2)+(add?" + ":" − ")+b.toFixed(2)+" =", ans:(add?a+b:a-b).toFixed(2)};},
+    function(){var p=pick([10,20,25,30,40,50,60,75]),q=pick([20,40,60,80,120,160,200,240,400]);return {q:"Hitung "+p+"% daripada "+q+".", ans:String(p*q/100)};},
+    function(){var nm=pick(NAMES),have=pick([20,50,100]),c=rnd(150,have*100-100)/100;return {q:nm+" ada "+rmf(have)+". Dia membeli sebuah buku berharga "+rmf(c)+". Berapakah baki wangnya?", ans:(have-c).toFixed(2), pre:"RM"};},
+    function(){var h=rnd(1,11),m=rnd(0,11)*5,pm=Math.random()<0.5;return {q:"Tukar "+h+":"+p2(m)+(pm?" p.m.":" a.m.")+" kepada sistem 24 jam.", ans:p2(pm?h+12:h)+p2(m), pre:"jam"};},
+    function(){var c=pick([["km","m",1000],["kg","g",1000],["l","ml",1000],["m","cm",100]]),v=rnd(105,995)/100;return {q:"Tukar "+v+" "+c[0]+" kepada "+c[1]+".", ans:num(Math.round(v*c[2])), unit:c[1]};},
+    function(){var l=rnd(4,20),w=rnd(3,l),per=Math.random()<0.5;return {q:"Sebuah segi empat tepat berukuran "+l+" cm panjang dan "+w+" cm lebar. Hitung "+(per?"perimeternya":"luasnya")+".", ans:String(per?2*(l+w):l*w), unit:per?"cm":"cm²"};}
+  ];
+  var UB=[
+    function(){
+      var nm=pick(NAMES), pk=rnd(3,18)*10/100+0.5, pa=rnd(4,25)*10/100+1, n1=rnd(2,6), n2=rnd(2,4);
+      var tot=Math.round((pk*n1+pa*n2)*100)/100, pay=Math.ceil((tot+0.01)/10)*10, bag=pick([20,40,60,80,120]), d=pick([10,20,25,50]);
+      var avg=rnd(4,9)*10, x=avg+rnd(-8,8), y=avg+rnd(-8,8), z=3*avg-x-y;
+      return {title:"Hari Jualan Amal",
+        scene:"Sempena Hari Jualan Amal, gerai kelas 5 Cerdik menjual kuih dengan harga <b>"+rmf(pk)+"</b> sebiji dan air sirap dengan harga <b>"+rmf(pa)+"</b> secawan. Gerai itu juga menjual beg sekolah terpakai berharga <b>"+rmf(bag)+"</b> dengan diskaun <b>"+d+"%</b>. Dalam tiga hari, gerai itu menjual "+x+", "+y+" dan "+z+" biji kuih.",
+        parts:[
+          {q:nm+" membeli "+n1+" biji kuih dan "+n2+" cawan air sirap. Berapakah jumlah harga yang perlu dibayar?", ans:tot.toFixed(2), pre:"RM"},
+          {q:nm+" membayar dengan wang kertas "+rmf(pay)+". Berapakah baki wangnya?", ans:(pay-tot).toFixed(2), pre:"RM"},
+          {q:"Berapakah harga beg sekolah itu selepas diskaun?", ans:(bag*(100-d)/100).toFixed(2), pre:"RM"},
+          {q:"Berapakah purata bilangan kuih yang dijual sehari?", ans:String(avg), unit:"biji"}
+        ]};
+    },
+    function(){
+      var L=rnd(8,30), Wd=rnd(5,L-1), sh=rnd(7,9), sm=rnd(0,11)*5, dur=rnd(9,30)*5, e=sh*60+sm+dur, km=rnd(105,995)/100;
+      return {title:"Kebun dan Lawatan Sekolah",
+        scene:"Kebun sekolah berbentuk segi empat tepat dengan panjang <b>"+L+" m</b> dan lebar <b>"+Wd+" m</b>. Murid Tahun 5 melawat sebuah ladang. Bas bertolak dari sekolah pada <b>jam "+p2(sh)+p2(sm)+"</b> dan tiba di ladang pada <b>jam "+p2(Math.floor(e/60))+p2(e%60)+"</b>. Jarak dari sekolah ke ladang ialah <b>"+km+" km</b>.",
+        parts:[
+          {q:"Hitung perimeter kebun sekolah itu.", ans:String(2*(L+Wd)), unit:"m"},
+          {q:"Hitung luas kebun sekolah itu.", ans:String(L*Wd), unit:"m²"},
+          {q:"Berapakah tempoh perjalanan bas itu dalam minit?", ans:String(dur), unit:"minit"},
+          {q:"Tukar jarak dari sekolah ke ladang kepada meter.", ans:num(Math.round(km*1000)), unit:"m"}
+        ]};
+    }
+  ];
+  var uSet=null, uTimerId=null, uLeft=0, uDone=false;
+  function ansRow(id,o){ return '<div class="ans-row">'+(o.pre?'<span>'+o.pre+'</span>':'')+'<input id="'+id+'" type="text" inputmode="decimal" autocomplete="off" aria-label="Jawapan">'+(o.unit?'<span>'+o.unit+'</span>':'')+'<span class="mk">'+o.mk+' markah</span></div><div class="fix" id="'+id+'_f"></div>'; }
+  function tick(){
+    uLeft--; var m=Math.max(0,Math.floor(uLeft/60)), s=Math.max(0,uLeft%60);
+    $("uTimer").textContent=m+":"+(s<10?"0":"")+s;
+    if(uLeft<=0){ clearInterval(uTimerId); if(!uDone) gradeUasa(); }
+  }
+  function startUasa(){
+    uDone=false;
+    uSet={A:UA.map(function(g){var o=g(); o.mk=2; return o;}), B:UB.map(function(g){var o=g(); o.parts.forEach(function(p){p.mk=3;}); return o;})};
+    $("uPaperA").innerHTML='<h2>Bahagian A</h2>'+uSet.A.map(function(o,i){return '<div class="uq" id="uqa'+i+'"><div class="qt"><span class="no-q">'+(i+1)+'.</span> '+o.q+'</div>'+ansRow("ua"+i,o)+'</div>';}).join("");
+    $("uPaperB").innerHTML='<h2>Bahagian B</h2>'+uSet.B.map(function(b,j){
+      return '<div class="qt"><span class="no-q">'+(14+j)+'.</span> '+b.title+'</div><div class="scene">'+b.scene+'</div>'+
+        b.parts.map(function(p,k){return '<div class="uq" id="uqb'+j+'_'+k+'"><div class="qt">('+"abcd"[k]+') '+p.q+'</div>'+ansRow("ub"+j+"_"+k,p)+'</div>';}).join("");
+    }).join("");
+    $("uResult").innerHTML=""; $("uSubmit").style.display="";
+    clearInterval(uTimerId); uLeft=75*60; $("uTimer").textContent="75:00"; uTimerId=setInterval(tick,1000);
+    show("uasa");
+  }
+  function mark(box,id,o){
+    var ok=same($(id).value,o.ans); $(id).disabled=true;
+    $(box).classList.add(ok?"ok":"no");
+    $(id+"_f").textContent=ok?"Betul (+"+o.mk+")":"Jawapan betul: "+(o.pre?o.pre+" ":"")+o.ans+(o.unit?" "+o.unit:"");
+    return ok?o.mk:0;
+  }
+  function gradeUasa(){
+    if(uDone) return; uDone=true; clearInterval(uTimerId);
+    var a=0,b=0;
+    uSet.A.forEach(function(o,i){a+=mark("uqa"+i,"ua"+i,o);});
+    uSet.B.forEach(function(q,j){q.parts.forEach(function(p,k){b+=mark("uqb"+j+"_"+k,"ub"+j+"_"+k,p);});});
+    var t=a+b, pc=Math.round(t/50*100);
+    var msg=pc>=80?"Cemerlang! Kamu sudah bersedia untuk UASA.":pc>=60?"Bagus! Ulang kaji topik yang salah untuk markah lebih tinggi.":pc>=40?"Boleh tahan. Fokus pada soalan yang salah dan cuba set baharu.":"Jangan putus asa. Latih topik satu per satu dahulu, kemudian cuba lagi.";
+    $("uResult").innerHTML='<div class="result"><div class="r-score">'+t+' / 50</div><div class="u-res">'+
+      '<div class="sumrow"><span>Bahagian A</span><span>'+a+' / 26</span></div>'+
+      '<div class="sumrow"><span>Bahagian B</span><span>'+b+' / 24</span></div>'+
+      '<div class="sumrow"><span>Peratus</span><span>'+pc+'%</span></div></div>'+
+      '<p class="r-msg">'+msg+' Semak jawapan betul di bawah.</p>'+
+      '<div class="r-btns"><button class="btn primary" id="uAgain" type="button">Cuba set baharu</button></div></div>';
+    $("uAgain").addEventListener("click",startUasa);
+    $("uSubmit").style.display="none";
+    window.scrollTo(0,0);
+  }
+  $("uasaBtn").addEventListener("click",startUasa);
+  $("uSubmit").addEventListener("click",gradeUasa);
+  $("uBack").addEventListener("click",function(){ clearInterval(uTimerId); renderHome(); show("home"); });
+  window.__UASA={UA:UA,UB:UB,same:same};
+
   renderHome();
   window.__TOPICS=TOPICS;
 })();
